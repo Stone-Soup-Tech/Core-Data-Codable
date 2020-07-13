@@ -13,7 +13,8 @@ public protocol FetchableManagedObject {
     
     associatedtype FetchableCodingKeys: CodingKey
     associatedtype Identifier: Decodable & CVarArg
-    static var identifierKey: FetchableCodingKeys { get }
+    static var identifierKeys: [FetchableCodingKeys] { get }
+    static var identifierNames: [String] { get }
     
 }
 
@@ -22,9 +23,20 @@ extension FetchableManagedObject where Self: NSManagedObject {
     static func fetch(from decoder: Decoder) throws -> Self? {
         let context = try decoder.managedObjectContext()
         let container = try decoder.container(keyedBy: FetchableCodingKeys.self)
-        let identifier = try container.decode(Identifier.self, forKey: identifierKey)
+        
+        var predicate = ""
+        var identifiers = [Identifier]()
+        for i in 0..<identifierKeys.count {
+            let identifier = try container.decode(Identifier.self, forKey: identifierKeys[i])
+            identifiers.append(identifier)
+            if i > 0 {
+                predicate += " && "
+            }
+            
+            predicate += "\(identifierNames[i]) == %d"
+        }
         let request = NSFetchRequest<Self>(entityName: String(describing: Self.self))
-        request.predicate = NSPredicate(format: "\(identifierKey.stringValue) = %@", identifier)
+        request.predicate = NSPredicate(format: predicate, argumentArray: identifiers)
         return try context.fetch(request).first
     }
     
