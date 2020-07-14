@@ -18,11 +18,13 @@ CoreDataCodable contains protocols and extensions for making Core Data play nice
 
 ### Cocoapods
 
-You want to add `pod 'CoreDataCodable', '~> 1.0'` similar to the following to your Podfile:
+You must to have a ssh key on your account and access to this repository.
+
+You want to add `pod 'CoreDataCodable', :git => 'git@bitbucket.org:stonesouptech/coredatacodable.git'` similar to the following to your Podfile:
 
 ```ruby
 target 'MyApp' do
-  pod 'CoreDataCodable', '~> 1.0'
+  pod 'CoreDataCodable', :git => 'git@bitbucket.org:stonesouptech/coredatacodable.git'
 end
 ```
 
