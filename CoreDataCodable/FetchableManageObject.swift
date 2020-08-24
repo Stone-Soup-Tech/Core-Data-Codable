@@ -20,7 +20,7 @@ public protocol FetchableManagedObject {
 
 extension FetchableManagedObject where Self: NSManagedObject {
     
-    static func fetch(from decoder: Decoder) throws -> Self? {
+    public static func fetch(from decoder: Decoder) throws -> Self? {
         let context = try decoder.managedObjectContext()
         let container = try decoder.container(keyedBy: FetchableCodingKeys.self)
         
