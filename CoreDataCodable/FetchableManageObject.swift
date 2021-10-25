@@ -17,6 +17,9 @@ public protocol FetchableManagedObject {
     associatedtype FetchableCodingKeys: CodingKey
     associatedtype Identifier: Decodable & CVarArg
     static var identifierKeys: [FetchableCodingKeys] { get }
+    /**
+     Contains the names from DB for the identifiers
+     */
     static var identifierNames: [String] { get }
     
 }
