@@ -13,9 +13,12 @@ import CoreData
 import Foundation
 
 public protocol FetchableManagedObject {
+    
     associatedtype FetchableCodingKeys: CodingKey
     associatedtype Identifier: Decodable & CVarArg
     static var identifierKeys: [FetchableCodingKeys] { get }
+    static var identifierNames: [String] { get }
+    
 }
 
 extension FetchableManagedObject where Self: NSManagedObject {
@@ -33,7 +36,7 @@ extension FetchableManagedObject where Self: NSManagedObject {
                 predicate += " && "
             }
             
-            predicate += "\(identifierKeys[i].stringValue) == %d"
+            predicate += "\(identifierNames[i]) == %d"
         }
         let request = NSFetchRequest<Self>(entityName: String(describing: Self.self))
         request.predicate = NSPredicate(format: predicate, argumentArray: identifiers)
@@ -41,4 +44,3 @@ extension FetchableManagedObject where Self: NSManagedObject {
     }
     
 }
-
